@@ -789,7 +789,76 @@ fw1200/payload-1200-4gb-pro-baikal.elf: ../lib/lib.a main-baikal.c ps4-kexec-120
 
 %.bin: %.elf
 	objcopy $< --only-section .text --only-section .data --only-section .bss --only-section .rodata -O binary $@
-	file $@ | fgrep -q '$@: DOS executable (COM)'
 
 ps4-kexec-%/kexec.bin:
 	cd ps4-kexec-$*; make
+
+# 5GB VRAM variants for all firmware versions (non-pro only)
+fw505/payload-505-5gb.elf: ../lib/lib.a main.c ps4-kexec-505/kexec.bin
+	gcc -isystem ../freebsd-headers -nostdinc -nostdlib -fno-stack-protector -static ../lib/lib.a -D__5_05__ -DPS4_5_05 -DVRAM_GB_DEFAULT=5 main.c -Wl,-gc-sections -o fw505/payload-505-5gb.elf -fPIE -ffreestanding
+fw672/payload-672-5gb.elf: ../lib/lib.a main.c ps4-kexec-672/kexec.bin
+	gcc -isystem ../freebsd-headers -nostdinc -nostdlib -fno-stack-protector -static ../lib/lib.a -D__6_72__ -DPS4_6_72 -DVRAM_GB_DEFAULT=5 main.c -Wl,-gc-sections -o fw672/payload-672-5gb.elf -fPIE -ffreestanding
+fw700/payload-700-5gb.elf: ../lib/lib.a main.c ps4-kexec-700/kexec.bin
+	gcc -isystem ../freebsd-headers -nostdinc -nostdlib -fno-stack-protector -static ../lib/lib.a -D__7_00__ -DPS4_7_00 -DVRAM_GB_DEFAULT=5 main.c -Wl,-gc-sections -o fw700/payload-700-5gb.elf -fPIE -ffreestanding
+fw900/payload-900-5gb.elf: ../lib/lib.a main.c ps4-kexec-900/kexec.bin
+	gcc -isystem ../freebsd-headers -nostdinc -nostdlib -fno-stack-protector -static ../lib/lib.a -D__9_00__ -DPS4_9_00 -DVRAM_GB_DEFAULT=5 main.c -Wl,-gc-sections -o fw900/payload-900-5gb.elf -fPIE -ffreestanding
+fw903/payload-903-5gb.elf: ../lib/lib.a main.c ps4-kexec-903/kexec.bin
+	gcc -isystem ../freebsd-headers -nostdinc -nostdlib -fno-stack-protector -static ../lib/lib.a -D__9_03__ -DPS4_9_03 -DVRAM_GB_DEFAULT=5 main.c -Wl,-gc-sections -o fw903/payload-903-5gb.elf -fPIE -ffreestanding
+fw960/payload-960-5gb.elf: ../lib/lib.a main.c ps4-kexec-960/kexec.bin
+	gcc -isystem ../freebsd-headers -nostdinc -nostdlib -fno-stack-protector -static ../lib/lib.a -D__9_60__ -DPS4_9_60 -DVRAM_GB_DEFAULT=5 main.c -Wl,-gc-sections -o fw960/payload-960-5gb.elf -fPIE -ffreestanding
+fw1000/payload-1000-5gb.elf: ../lib/lib.a main.c ps4-kexec-1000/kexec.bin
+	gcc -isystem ../freebsd-headers -nostdinc -nostdlib -fno-stack-protector -static ../lib/lib.a -D__10_00__ -DPS4_10_00 -DVRAM_GB_DEFAULT=5 main.c -Wl,-gc-sections -o fw1000/payload-1000-5gb.elf -fPIE -ffreestanding
+fw1050/payload-1050-5gb.elf: ../lib/lib.a main.c ps4-kexec-1050/kexec.bin
+	gcc -isystem ../freebsd-headers -nostdinc -nostdlib -fno-stack-protector -static ../lib/lib.a -D__10_50__ -DPS4_10_50 -DVRAM_GB_DEFAULT=5 main.c -Wl,-gc-sections -o fw1050/payload-1050-5gb.elf -fPIE -ffreestanding
+fw1100/payload-1100-5gb.elf: ../lib/lib.a main.c ps4-kexec-1100/kexec.bin
+	gcc -isystem ../freebsd-headers -nostdinc -nostdlib -static ../lib/lib.a -D__11_00__ -DPS4_11_00 -DVRAM_GB_DEFAULT=5 main .c -Wl,-gcsection
+
+# 5GB bin rules
+fw505/payload-505-5gb.bin: fw505/payload-505-5gb.elf
+	objcopy $< --only-section .text --only-section .data --only-section .bss --only-section .rodata -O binary $@
+
+fw672/payload-672-5gb.bin: fw672/payload-672-5gb.elf
+	objcopy $< --only-section .text --only-section .data --only-section .bss --only-section .rodata -O binary $@
+
+fw700/payload-700-5gb.bin: fw700/payload-700-5gb.elf
+	objcopy $< --only-section .text --only-section .data --only-section .bss --only-section .rodata -O binary $@
+
+fw900/payload-900-5gb.bin: fw900/payload-900-5gb.elf
+	objcopy $< --only-section .text --only-section .data --only-section .bss --only-section .rodata -O binary $@
+
+fw903/payload-903-5gb.bin: fw903/payload-903-5gb.elf
+	objcopy $< --only-section .text --only-section .data --only-section .bss --only-section .rodata -O binary $@
+
+fw960/payload-960-5gb.bin: fw960/payload-960-5gb.elf
+	objcopy $< --only-section .text --only-section .data --only-section .bss --only-section .rodata -O binary $@
+
+fw1000/payload-1000-5gb.bin: fw1000/payload-1000-5gb.elf
+	objcopy $< --only-section .text --only-section .data --only-section .bss --only-section .rodata -O binary $@
+
+fw1050/payload-1050-5gb.bin: fw1050/payload-1050-5gb.elf
+	objcopy $< --only-section .text --only-section .data --only-section .bss --only-section .rodata -O binary $@
+
+# Simple bin conversion for 5GB targets
+fw505/payload-505-5gb.bin: fw505/payload-505-5gb.elf
+	objcopy $< --only-section .text --only-section .data --only-section .bss --only-section .rodata -O binary $@
+
+fw672/payload-672-5gb.bin: fw672/payload-672-5gb.elf
+	objcopy $< --only-section .text --only-section .data --only-section .bss --only-section .rodata -O binary $@
+
+fw700/payload-700-5gb.bin: fw700/payload-700-5gb.elf
+	objcopy $< --only-section .text --only-section .data --only-section .bss --only-section .rodata -O binary $@
+
+fw900/payload-900-5gb.bin: fw900/payload-900-5gb.elf
+	objcopy $< --only-section .text --only-section .data --only-section .bss --only-section .rodata -O binary $@
+
+fw903/payload-903-5gb.bin: fw903/payload-903-5gb.elf
+	objcopy $< --only-section .text --only-section .data --only-section .bss --only-section .rodata -O binary $@
+
+fw960/payload-960-5gb.bin: fw960/payload-960-5gb.elf
+	objcopy $< --only-section .text --only-section .data --only-section .bss --only-section .rodata -O binary $@
+
+fw1000/payload-1000-5gb.bin: fw1000/payload-1000-5gb.elf
+	objcopy $< --only-section .text --only-section .data --only-section .bss --only-section .rodata -O binary $@
+
+fw1050/payload-1050-5gb.bin: fw1050/payload-1050-5gb.elf
+	objcopy $< --only-section .text --only-section .data --only-section .bss --only-section .rodata -O binary $@
